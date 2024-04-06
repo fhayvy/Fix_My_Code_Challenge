@@ -11,58 +11,43 @@
  */
 int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 {
-    dlistint_t *saved_head;
-    dlistint_t *tmp;
-    unsigned int p;
+	dlistint_t *saved_head;
+	dlistint_t *tmp;
+	unsigned int p;
 
-    if (*head == NULL)
-    {
-        printf("Error: List is empty\n");
-        return (-1);
-    }
-
-    saved_head = *head;
-    p = 0;
-    while (p < index && *head != NULL)
-    {
-        *head = (*head)->next;
-        p++;
-    }
-
-    printf("Reached loop end\n");
-
-    if (p != index)
-    {
-        *head = saved_head;
-        printf("Error: Index out of range\n");
-        return (-1);
-    }
-
-    printf("Index matches\n");
-
-    if (0 == index)
-    {
-        tmp = (*head)->next;
-        free(*head);
-        *head = tmp;
-        if (tmp != NULL)
-        {
-            tmp->prev = NULL;
-        }
-    }
-    else
-    {
-        tmp = *head;
-        while (p < index)
-        {
-            tmp = tmp->next;
-            p++;
-        }
-        tmp->prev->next = tmp->next;
-        if (tmp->next)
-            tmp->next->prev = tmp->prev;
-        free(tmp);
-        *head = saved_head;
-    }
-    return (1);
+	if (*head == NULL)
+	{
+		return (-1);
+	}
+	saved_head = *head;
+	p = 0;
+	while (p < index && *head != NULL)
+	{
+		*head = (*head)->next;
+		p++;
+	}
+	if (p != index)
+	{
+		*head = saved_head;
+		return (-1);
+	}
+	if (0 == index)
+	{
+		tmp = (*head)->next;
+		free(*head);
+		*head = tmp;
+		if (tmp != NULL)
+		{
+			tmp->prev = NULL;
+		}
+	}
+	else
+	{
+		(*head)->prev->prev = (*head)->prev;
+		free(*head);
+		if ((*head)->next)
+			(*head)->next->prev = (*head)->prev;
+		*head = saved_head;
+	}
+	return (1);
 }
